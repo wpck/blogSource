@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexedDB与JS本地变量存储</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    body {
+        position: relative;
+        padding: 20px;
+    }
+    #loading {
+        position: absolute;
+        width: 500px;
+        height: 80px;
+        background: #eeeeee;
+        top: 20px;
+        left: 380px;
+        overflow: auto;
+    }
+    #loading::after {
+        content: '';
+        clear: both;
+    }
+</style>
+<body>
+
+    <!-- <div>
+        <h4>客户端存储的成熟方案包括以下几种: </h4>
+        <p>cookie: 存储体积小,且会HTTP请求的请求和响应一起发送,一般来说,每个域名50个,大小总计4KB的cookie是安全的</p>
+        <p>localStorage, sessionStorage: 存储大小一般为5-10MB,且仅支持字符串数据,不同之处在于sessionStorage为会话存储,关闭页面即清除</p>
+        <p>IndexedDB: 可以存储任何数据类型的客户端存储系统,类似关系型数据库,理论上没有存储上限,除非手动删除,否则会一直存在的半永久化存储方案;适合需要不断从服务器获取大量数据的场景;</p>
+        <p>rms现有系统使用消息直接存入js本地变量,暂未使用客户端存储方案</p>
+    </div> -->
+
+    <div>
+        <p>数据操作</p>
+        <p>写入10万条数据: </p>
+        <p>分别存入indexedDB 和 js 本地变量,用时对比</p>
+        <div><span>indexDB</span><button id='start'>开始写入</button></div>
+        <div><span>js-JSON</span><button id='js-start'>开始写入</button></div>
+        <div style="margin-top: 8px">
+            indexedDB的所有数据操作都是<span  style="color: red">异步的</span>,先发出操作请求,之后需要监听操作结果事件(error, success)
+            对比数据存入indexedDB和js变量,indexedDB<span  style="color: red">发出请求需要4000-6000ms的时间</span>,监控任务管理器,
+            期间cpu达100%,内存占用增加,之后cpu下降,存储操作异步进行,内存占用持续增加,<span  style="color: red">约30s后内存占用稳定,较初始值有所增加(>5MB),js占用内存持平;</span>
+        </div>
+        <div style="margin-top: 4px">
+            数据直接存入js本地变量,所需要的<span  style="color: red">时间是0ms,内存占用增加1-2MB,js内存占用增加1-2MB,</span>
+        </div>
+        
+        <p style="margin-top: 28px">读取10万条数据: </p>
+        <p>分别从indexedDB 和 js 本地变量中读取,用时对比</p>
+        <div><span>indexDB</span><button id='cursor'>开始遍历</button></div>
+        <div><span>js-JSON</span><button id='js-cursor'>开始遍历</button></div>
+
+        <div style="margin-top: 8px">
+            IndexedDB读取10万条数据<span style="color:red">需要用时3000-4000ms</span>,浏览器内存占用持平;
+        </div>
+        <div style="margin-top: 4px">
+            js读取本地变量数据用时0ms,内存占用持平;
+        </div>
+
+        <div style="margin-top: 28px">
+            IndexedDB与js本地变量存储相比,写入速度较慢,读取速度稍慢,
+            优化空间有限,<span  style="color: red">更适合于需要不断从服务器获取大量数据的场景,因为存在网络等外在因素的影响,浏览器访问IndexDB的速度要比访问服务器的速度更快</span>
+        </div>
+    </div>
+    <div style='float:left' id='loading'>操作结果显示</div>
+
+    <!-- <div style="margin-top: 20px">
+        <p>数据操作log</p>
+        <d><span>indexDB</span><button id='view-start'>开始</button></d
+
+            iv>
+        <div><span>js-JSON</span><button id='view-js-start'>开始</button></div>
+        
+    </div> -->
+   
+    <!-- <button id='add'>新增</button>
+    <button id='get'>获取</button>
+    <button id='delete'>删除</button>
+    <button id='put'>更新</button> -->
+
+    <!-- <button id='cursor'>遍历</button> -->
+
+    <!-- <button id='del-database'>删除数据库</button> -->
+
+    
+</body>
+
+<script>
+
+window.onload = () =>{
+
+    document.cookie = "name=Raymond";
+
+    let sing_data = {
+            "id":"e7ef4f53e26540a892dbaa18ccb4b4ad",
+            "type":"StandManualTrigger","flag":"U",
+            "mesg":{
+                "id":"ab3084331f184fedad1f193212bd1d0d_",
+                "roasId":"ab3084331f184fedad1f193212bd1d0d",
+                "afid":"35b7036572894a6a91b0398b5db09cd2",
+                "dfid":"017de0b0a8444425b164b3e35b623267",
+                "standid":"05",
+                "stime":"2020-08-05 08:35:00",
+                "etime":"2020-08-05 23:00:00",
+                "firstOpenTime":"2020-08-05 23:00:00",
+                "stt":"STA",
+                "ett":"STD",
+                "alock":0,
+                "dlock":0,
+                "isDrag":0,
+                "fna":"CF9086",
+                "fnd":"CF9085",
+                "arn":"B2135",
+                "aircraftType":
+                "734",
+                "adori":"D",
+                "ddori":"D",
+                "aAlrline":"CF",
+                "dAlrline":"CF",
+                "atc":"H/G",
+                "dtc":"H/G",
+                "totalHardScore":-2,
+                "totalMediumScore":0,
+                "totalSoftScore":0,
+                "avip":"N",
+                "dvip":"N",
+                "astatus":"无",
+                "dstatus":"无",
+                "aOperDate":"2020-08-05 00:00:00",
+                "dOperDate":"2020-08-05 00:00:00",
+                "services":[
+                    {"detailNo":"0024"},
+                    {"detailNo":"0044"},
+                    {"detailNo":"0043"},
+                    {"detailNo":"0019"}
+                ],
+                "archiveArr":0,
+                "archiveDep":0,
+                "aOriginAIata":"CAN",
+                "aDestAIata":"HGH",
+                "dOriginAIata":"HGH",
+                "dDestAIata":"CAN",
+                "aPassengerCount":0,
+                "dPassengerCount":0,
+                "aSta":"2020-08-05 08:35:00",
+                "dStd":"2020-08-05 23:00:00",
+                "terminal":"1",
+                "aFocus":"false",
+                "dFocus":"false",
+                "reasons":[
+                    {
+                        "ganttId":"ab3084331f184fedad1f193212bd1d0d_",
+                        "hardScore":-1,
+                        "mediumScore":0,
+                        "softScore":0,
+                        "constraintEnName":"NoAllocationTemporaryStand",
+                        "stand":"05",
+                        "fn":"CF9086 CF9085",
+                        "penaltyInfo":"CF9086 CF9085",
+                        "aOperDate":"2020-08-05 00:00:00",
+                        "dOperDate":"2020-08-05 00:00:00"
+                    },{
+                        "ganttId":"ab3084331f184fedad1f193212bd1d0d_",
+                        "hardScore":-1,
+                        "mediumScore":0,
+                        "softScore":0,
+                        "constraintEnName":"StandConflict",
+                        "stand":"05",
+                        "fn":"CF9086 CF9085",
+                        "penaltyInfo":"734",
+                        "aOperDate":"2020-08-05 00:00:00",
+                        "dOperDate":"2020-08-05 00:00:00"
+                    }
+                ],
+                "anc":"CGO",
+                "dnc":"CGO"
+            },
+            "modifys":[
+                {"name":"triggerMethod","oldValue":"","newValue":"changeStand"},
+                {"name":"source","oldValue":"","newValue":"system"},
+                {"name":"standid","oldValue":"103","newValue":"05"},
+                {"name":"totalHardScore","oldValue":0,"newValue":-2},
+                {"name":"globalScore","oldValue":"","newValue":"-21hard/-103medium/-49177soft"}
+            ],
+            "createTime":1596603380629
+        }
+    let db = null, js_res = [];
+    let request = window.indexedDB.open('testIDB');   //打开数据库,若不存在即创建;
+    request.onsuccess = (event) => {
+        console.log('打开数据库成功');
+        db = request.result;
+    }
+    request.onupgradeneeded = (event) => {
+        console.log('创建数据表成功')
+        db = event.target.result;
+        let objectStore = db.createObjectStore('testTable', {autoIncrement: true});
+        // let personTable = db.createObjectStore('person', {keyPath: 'id'});
+        // let mesgTable = db.createObjectStore('mesgTable', {autoIncrement: true});
+
+        console.log(db);
+        // personTable.createIndex('name', 'name', {unique: false})
+    }
+
+
+    let loading = document.getElementById('loading');
+
+    let oprtData = (type) => {
+        let transaction = db.transaction(['person'], 'readwrite');
+        let person_os = transaction.objectStore('person');
+        let oprt_request;
+        switch(type) {
+            case 'add':
+            oprt_request = person_os.add({id: 1, name: 'name1', age: 'age1'});
+                break;
+            case 'get':
+                oprt_request = person_os.get(1);
+                break;
+            case 'put': 
+            oprt_request = person_os.put({id: 1, name: 'real11', age: 11});
+                break;
+            case 'delete':
+            oprt_request = person_os.delete(1);
+        }
+        oprt_request.onerror = () => {
+            console.log(type + '失败');
+        }
+        oprt_request.onsuccess = () => {
+            console.log('写入数据成功');
+            if (type === 'get') {
+                console.log(oprt_request);
+                console.log(oprt_request.result);
+            }
+        }
+    }
+
+
+    let startPush = (mesg_os) => {
+        // let transaction = db.transaction(['mesgTable'], 'readwrite');
+        // let mesg_os = transaction.objectStore('mesgTable');
+        // let oprt_request;
+        return oprt_request = mesg_os.add(sing_data);
+        
+        // return oprt_request;
+    }
+
+
+    let readAll = (person_os) => {
+        let i=0, sec = Date.parse(new Date());
+        console.log('开始读取')
+        let readall_req = person_os.openCursor();
+        readall_req.onsuccess = (event) => {
+            let cursor = event.target.result;
+            if (cursor) {
+                // console.log(cursor.key);
+                // console.log(cursor.value);
+                i++;
+                if (i<100000) {
+                    cursor.continue();
+                }
+                else {
+                    loading.innerText = '读取'+i+'条数据完毕,用时' + (Date.parse(new Date()) - sec)+'ms';
+                }
+            } else {
+                // loading.innerText = '读取完毕,用时' + (Date.parse(new Date()) - sec);
+                // console.log('读取完毕,用时');
+            }
+        }
+    }
+
+    
+    let start = () => {
+        let sec = Date.parse(new Date());
+        for (let i = 0; i < 100000; i++) {
+            js_res.push(sing_data);
+        }
+        loading.innerText = '执行完毕,用时:' + (Date.parse(new Date()) - sec)+'ms';
+        console.log(Date.parse(new Date()) - sec);
+    }
+    let timer = null;
+    let viewstart = () => {
+        let a = [], sec = Date.parse(new Date());
+        console.log('开始执行')
+        for (let i = 0; i < 2000; i++) {
+           a.push(sing_data);
+            loading.innerHTML += '<br/>写入' + (i + 1) + '条数据';
+            
+            // loading.innerHTML += '<br/>'+ (i + 1);
+            // console.log(i)
+        }
+        // clearTimeout(timer);
+        loading.innerHTML += '执行完毕,用时:' + (Date.parse(new Date()) - sec)+'ms';
+        // console.log(a)
+        console.log(Date.parse(new Date()) - sec);
+    }
+
+    document.getElementById('js-start').onclick = ()=> {
+        loading.innerHTML = '开始执行,请稍等...';
+        start();
+    }
+    /* document.getElementById('view-js-start').onclick = ()=> {
+        loading.innerHTML = '开始执行,请稍等...';
+        setTimeout(()=>{
+            viewstart();
+        },10)
+        
+    } */
+
+
+
+    // document.getElementById('add').onclick = () => {
+    //     oprtData('add');
+    // }
+    // document.getElementById('get').onclick = () => {
+    //     oprtData('get');
+    // }
+    // document.getElementById('put').onclick = () => {
+    //     oprtData('put');
+    // }
+    document.getElementById('cursor').onclick = () => {
+        let transaction = db.transaction(['testTable']);
+        let person_os = transaction.objectStore('testTable');
+        readAll(person_os);
+    }
+    document.getElementById('js-cursor').onclick = () => {
+        let sec = Date.parse(new Date()), len = 0;
+        for (let i = 0; i < js_res.length; i++) {
+            len++;
+        }
+        console.log(len);
+        console.log(js_res.length)
+        loading.innerText = '读取'+len+'条数据完毕,用时' + (Date.parse(new Date()) - sec)+'ms';
+    }
+    document.getElementById('start').onclick = () => {
+        loading.innerHTML = '开始执行,请稍等...';
+        let sec = Date.parse(new Date());
+        setTimeout(()=>{
+            let transaction = db.transaction(['testTable'], 'readwrite');
+            let mesg_os = transaction.objectStore('testTable');
+            let oprt_request;
+            for(let i=0;i<100000;i++) {
+                startPush(mesg_os)
+            }
+            loading.innerHTML = '执行完毕,用时'+(Date.parse(new Date()) - sec)+'ms';
+            console.log(Date.parse(new Date()) - sec)
+        }, 10)
+        
+    }
+
+    /* document.getElementById('view-start').onclick = () => {
+        loading.innerHTML = '开始执行,请稍等...';
+        let sec = Date.parse(new Date());
+        let transaction = db.transaction(['testTable'], 'readwrite');
+        let mesg_os = transaction.objectStore('testTable');
+        let oprt_request;
+        for(let i=0;i<100000;i++) {
+            let oprt_request = startPush(mesg_os)
+            oprt_request.onsuccess = () => {
+                loading.innerHTML = '写入' + (i + 1) + '条数据';
+            }
+        }
+        loading.innerHTML = '执行完毕,用时'+(Date.parse(new Date()) - sec)+'ms';
+        
+        console.log(Date.parse(new Date()) - sec)
+    }
+
+    document.getElementById('del-database').onclick = () => {
+        console.log(db);
+        var req = indexedDB.deleteDatabase('testIDB'); 
+    } */
+
+
+    window.testTime = (text) => {
+        let reg = /^20\d{2}(1[0-2]|0[1-9])(0[1-9]|[1,2][0-9]|3[0,1])\s([01]\d|2[0-3])[0-5]\d$/
+        return reg.test(text);
+    }
+
+
+}
+
+    
+
+
+</script>
+
+</html>

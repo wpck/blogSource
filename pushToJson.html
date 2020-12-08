@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pushToJson</title>
+</head>
+<body>
+
+    <p>indexDB</p>
+    <p>操作流程</p>
+    <button id='add'>新增</button>
+    <button id='get'>获取</button>
+    <button id='delete'>删除</button>
+    <button id='put'>更新</button>
+
+    <button id='start'>开始</button>
+    
+</body>
+
+<script>
+
+window.onload = () =>{
+
+    let start = () => {
+        let a = [], sec = Date.parse(new Date());
+        for (let i = 0; i < 100000; i++) {
+        a.push({
+            "id":"e7ef4f53e26540a892dbaa18ccb4b4ad",
+            "type":"StandManualTrigger","flag":"U",
+            "mesg":{
+                "id":"ab3084331f184fedad1f193212bd1d0d_",
+                "roasId":"ab3084331f184fedad1f193212bd1d0d",
+                "afid":"35b7036572894a6a91b0398b5db09cd2",
+                "dfid":"017de0b0a8444425b164b3e35b623267",
+                "standid":"05",
+                "stime":"2020-08-05 08:35:00",
+                "etime":"2020-08-05 23:00:00",
+                "firstOpenTime":"2020-08-05 23:00:00",
+                "stt":"STA",
+                "ett":"STD",
+                "alock":0,
+                "dlock":0,
+                "isDrag":0,
+                "fna":"CF9086",
+                "fnd":"CF9085",
+                "arn":"B2135",
+                "aircraftType":
+                "734",
+                "adori":"D",
+                "ddori":"D",
+                "aAlrline":"CF",
+                "dAlrline":"CF",
+                "atc":"H/G",
+                "dtc":"H/G",
+                "totalHardScore":-2,
+                "totalMediumScore":0,
+                "totalSoftScore":0,
+                "avip":"N",
+                "dvip":"N",
+                "astatus":"无",
+                "dstatus":"无",
+                "aOperDate":"2020-08-05 00:00:00",
+                "dOperDate":"2020-08-05 00:00:00",
+                "services":[
+                    {"detailNo":"0024"},
+                    {"detailNo":"0044"},
+                    {"detailNo":"0043"},
+                    {"detailNo":"0019"}
+                ],
+                "archiveArr":0,
+                "archiveDep":0,
+                "aOriginAIata":"CAN",
+                "aDestAIata":"HGH",
+                "dOriginAIata":"HGH",
+                "dDestAIata":"CAN",
+                "aPassengerCount":0,
+                "dPassengerCount":0,
+                "aSta":"2020-08-05 08:35:00",
+                "dStd":"2020-08-05 23:00:00",
+                "terminal":"1",
+                "aFocus":"false",
+                "dFocus":"false",
+                "reasons":[
+                    {
+                        "ganttId":"ab3084331f184fedad1f193212bd1d0d_",
+                        "hardScore":-1,
+                        "mediumScore":0,
+                        "softScore":0,
+                        "constraintEnName":"NoAllocationTemporaryStand",
+                        "stand":"05",
+                        "fn":"CF9086 CF9085",
+                        "penaltyInfo":"CF9086 CF9085",
+                        "aOperDate":"2020-08-05 00:00:00",
+                        "dOperDate":"2020-08-05 00:00:00"
+                    },{
+                        "ganttId":"ab3084331f184fedad1f193212bd1d0d_",
+                        "hardScore":-1,
+                        "mediumScore":0,
+                        "softScore":0,
+                        "constraintEnName":"StandConflict",
+                        "stand":"05",
+                        "fn":"CF9086 CF9085",
+                        "penaltyInfo":"734",
+                        "aOperDate":"2020-08-05 00:00:00",
+                        "dOperDate":"2020-08-05 00:00:00"
+                    }
+                ],
+                "anc":"CGO",
+                "dnc":"CGO"
+            },
+            "modifys":[
+                {"name":"triggerMethod","oldValue":"","newValue":"changeStand"},
+                {"name":"source","oldValue":"","newValue":"system"},
+                {"name":"standid","oldValue":"103","newValue":"05"},
+                {"name":"totalHardScore","oldValue":0,"newValue":-2},
+                {"name":"globalScore","oldValue":"","newValue":"-21hard/-103medium/-49177soft"}
+            ],
+            "createTime":1596603380629
+        })
+        console.log('存储'+ (i+1)+ '条数据');
+    }
+        console.log(a)
+        console.log(Date.parse(new Date()) - sec);
+    }
+
+    document.getElementById('start').onclick = ()=> {
+        start();
+    }
+    
+
+}
+    
+
+
+</script>
+
+</html>

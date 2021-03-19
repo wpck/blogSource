@@ -3,7 +3,7 @@ title: butterfly主题配置
 date: 2019-11-17 20:18:40
 tags: hexo
 description: 记录个人博客的主题配置项
-cover: false
+cover: ./img/2theme.jpg
 ---
 ### butterfly主题配置
 选好主题搭建起博客之后,个性化配置自己的页面, 主题相关的配置在 / > theme > butterfly > _config.myl 文件

@@ -2,7 +2,7 @@
 title: 项目升级重构记录(react,antd)
 date: 2020-10-11 20:49:34
 tags: react
-cover: false
+cover: ./img/3upgrade.jpg
 description: react升级
 ---
 ## 升级重构

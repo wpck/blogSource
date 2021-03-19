@@ -2,7 +2,7 @@
 title: 重启个人博客(hexo+github)
 date: 2019-11-16 20:26:40
 tags: hexo
-cover: hexo.png
+cover: ./img/1restart.jpg
 description: 利用hexo搭建博客,托管到github上
 ---
 ### 重启个人blog
@@ -18,7 +18,7 @@ description: 利用hexo搭建博客,托管到github上
 超链接: [超链接名称](超链接地址 超链接title)
 ```
 
-早在两年前使用github-pages搭建过个人博客,由于种种原因一直出于荒废的状态,最近闲来有时间想重启自己的博客.对于wordPress和hexo之后,了解到hexo支持更多个性化配置,本人动手能力比较强,故选择则hexo练手,此篇记录一下详细的搭建过程.
+早在两年前使用github-pages搭建过个人博客,由于种种原因一直出于荒废的状态,最近闲来有时间想重启自己的博客.对于wordPress和hexo之后,了解到hexo支持更多个性化配置,故选择则hexo练手,此篇记录一下详细的搭建过程.
 
 hexo是一款基于node.js的静态博客框架,可以方便的生成静态网页托管在github和heroku上
 
@@ -77,15 +77,3 @@ deploy: type: git
 repository: https://github.com/wpck/wpck.github.io.git
 branch: master
 ```
-
- 
-
-
-
-
-
-
->
-
-
-

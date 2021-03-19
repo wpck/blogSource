@@ -2,7 +2,7 @@
 title: 项目中用到的ES6语法
 date: 2020-11-12 20:20:21
 tags:
-cover: false
+cover: ./img/4es6.jpg
 description: es6
 ---
 ### 项目中用到的ES6语法

@@ -2,7 +2,7 @@
 title: IndexDB小试牛刀
 date: 2020-11-16 20:15:53
 tags: indexedDB
-cover: false
+cover: ./img/6indexdb.jpg
 description: indexdb入门
 ---
 ### IndexDB

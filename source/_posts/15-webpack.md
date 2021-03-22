@@ -1,7 +1,8 @@
 ---
 title: webpack入门学习
 date: 2021-03-19 16:00:53
-tags:
+tags: 'webpack'
+cover: ./img/15webpack.webp
 ---
 
  平时工作中使用react框架,及其脚手架工具,几乎没有自己手动配置过webpack,本篇结合webpack[官方文档](https://webpack.docschina.org/guides/getting-started/)来学习;

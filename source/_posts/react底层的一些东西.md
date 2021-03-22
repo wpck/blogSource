@@ -2,6 +2,7 @@
 title: react底层的一些东西
 date: 2020-12-03 20:54:51
 tags:
+cover: ./img/9react.jpg
 ---
 ### react简介
 + 虚拟DOM

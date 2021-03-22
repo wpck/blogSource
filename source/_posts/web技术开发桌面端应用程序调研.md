@@ -2,6 +2,7 @@
 title: web技术开发桌面端应用程序调研
 date: 2020-12-16 13:31:12
 tags:
+cover: ./img/12client.jpg
 ---
 ### 场景
 nwjs和elecron是一个使用web技术来开发桌面应用的框架; 适用于使用web技术开发跨平台桌面应用;   

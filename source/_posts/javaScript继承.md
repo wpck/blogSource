@@ -2,6 +2,7 @@
 title: javaScript继承
 date: 2020-12-08 10:57:53
 tags:
+cover: ./img/10extend.jpg
 ---
 ### 原型链
 >js中,每个函数都有prototype属性,指向函数的原型对象; 每个对象(null除外)被创建的时候,都会有__proto__属性,指向其原型对象,并从原型对象继承属性和方法; 每个原型都有一个constructor属性,指向关联的构造函数;      
